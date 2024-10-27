@@ -5,15 +5,15 @@
 
 void generateKey(BigNum& e, BigNum& d, BigNum& n) {
     std::vector<uint64_t> primes = {
-        // ваш список простых чисел
+        // список простых чисел
     };
 
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(0, primes.size() - 1);
 
-    BigNum p = BigNum("3557");
-    BigNum q=BigNum("2579");
+    BigNum p = BigNum("503");
+    BigNum q=BigNum("509");
    /* do {
         q = BigNum(primes[distrib(gen)]);
     } while (p == q);*/
@@ -49,8 +49,12 @@ void generateKey(BigNum& e, BigNum& d, BigNum& n) {
 std::vector<BigNum> Rsa(const std::string& mes, BigNum e, BigNum n) {
     std::vector<BigNum> MesASCII;
     for (char c : mes) {
-        BigNum num(c); // предполагается, что конструктор принимает char
-        MesASCII.push_back(BigNum::PowNum(num, e, n));
+        BigNum num(c); 
+        BigNum numm=BigNum::PowNum(num, e, n);
+        std::cout<<"Num cod:";
+        numm.print();
+        std::cout<<std::endl;
+        MesASCII.push_back(numm);
     }
     return MesASCII;
 }
@@ -59,6 +63,9 @@ std::string DeRsa(const std::vector<BigNum>& mes, BigNum d, BigNum n) {
     std::string MesASCII;
     for (const BigNum& c : mes) {
         BigNum num = BigNum::PowNum(c, d, n);
+        std::cout<<"Num Decod:";
+        num.print();
+        std::cout<<std::endl;
        MesASCII += num.toChar();
     }
     return MesASCII;
@@ -78,7 +85,7 @@ int main() {
     n.print();
     std::cout<<"\n";
 
-    std::string word = "Hello";
+    std::string word = "Hello, world!";
     std::vector<BigNum> RsaCode = Rsa(word, e, n);
     
     std::cout << "Encrypted message: ";
